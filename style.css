@@ -1,5 +1,28 @@
+@font-face {
+  font-family: Schoolbell;
+  src: url(schoolbell.ttf);
+}
+
 * {
   margin: 0;
-  padding: 0;
-  background-color: rgb(117, 190, 255);
+  font-family: 'Schoolbell';
+}
+
+html, body {
+  overflow: hidden;
+  height: '120%';
+  background-color: rgb(172, 201, 255);
+  font-size: 3vh;
+}
+
+#header {
+  background-color: rgb(156, 156, 255);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 15vh;
+}
+
+#canvas {
+  position: absolute;
 }
