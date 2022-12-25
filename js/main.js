@@ -7,6 +7,7 @@ let balls = [
     x: 500,
     y: 500,
     size: 1,
+    currentSize: 0.5,
     currentSvg: 0,
     color: "#FFFFFF",
   },
@@ -14,21 +15,26 @@ let balls = [
     x: 200,
     y: 200,
     size: 2,
+    currentSize: 2,
     currentSvg: 0,
     color: "#FFFFFF",
   }
 ]
 
+const updateBall = (ball) => {
+  ball.currentSize += (ball.size - ball.currentSize) / 10;
+}
+
 const renderBall = (ball) => {
   const matrix = new DOMMatrix()
-    .scale(
-      scaleX=ball.size,
-      scaleY=ball.size,
-      originX=1000,
-      orignY=65)
     .translate(
       tx=ball.x,
       ty=ball.y
+    ).scale(
+      scaleX=ball.currentSize,
+      scaleY=ball.currentSize,
+      originX=65,
+      orignY=65
     )
 
   const path = new Path2D();
@@ -54,8 +60,7 @@ $(window).resize(() => {
 setInterval(() => {
   ctx.clearRect(0, 0, $("#canvas").width(), $("#canvas").height());
   balls.forEach(ball => {
+    updateBall(ball);
     renderBall(ball);
   })
-  
-  balls[1].size += 0.002;
 }, 1000 / fps);
