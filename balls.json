@@ -1,0 +1,12 @@
+[
+  {
+    "name": "About",
+    "size": 2,
+    "color": "#FFFFFF"
+  },
+  {
+    "name": "Image",
+    "size": 4,
+    "color": "#F00FFF"
+  }
+]

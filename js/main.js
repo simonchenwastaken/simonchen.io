@@ -1,72 +1,57 @@
-const fps = 60;
+// Global constants
+const fps = 5;
+const ctx = $("#canvas")[0].getContext('2d');
 
-let ctx = $("#canvas")[0].getContext('2d');
+// Global state
 let currentPath = "/";
-let balls = [
-  {
-    x: 500,
-    y: 500,
-    size: 1,
-    currentSize: 0,
-    currentSvg: 0,
-    currentTick: 12,
-    color: "#FFFFFF",
-  },
-  {
-    x: 200,
-    y: 200,
-    size: 2,
-    currentSize: 0,
-    currentSvg: 0,
-    currentTick: 0,
-    color: "#EEEEFF",
-  }
-]
+let balls = []
 
-const updateBall = (ball) => {
-  ball.currentSize += (ball.size - ball.currentSize) / 25;
-  ball.currentTick++;
-  if (ball.currentTick % 30 === 0) {
-    ball.currentSvg = (ball.currentSvg + 1) % ballSvgs.length
-  }
-}
-
-const renderBall = (ball) => {
-  const matrix = new DOMMatrix()
-    .translate(
-      tx=ball.x,
-      ty=ball.y
-    ).scale(
-      scaleX=ball.currentSize,
-      scaleY=ball.currentSize,
-      originX=65,
-      orignY=65
-    )
-
-  const path = new Path2D();
-  path.addPath(
-    ballSvgs[ball.currentSvg],
-    matrix
-  );
-
-  ctx.fillStyle = ball.color;
-  ctx.fill(path)
-};
-
+// Application start
 $(document).ready(() => {
   $("#canvas").attr("width", ($(window).width()));
   $("#canvas").attr("height", ($(window).height()));
+
+  $.getJSON("balls.json", json => {
+    balls = json.map(ballData => BallFactory(ballData));
+  });
+
 });
 
+// Application window resize
 $(window).resize(() => {
-  $("#canvas").attr("width", ($(window).width()));
-  $("#canvas").attr("height", ($(window).height()));
+  const width = $("#canvas").width();
+  const height = $("#canvas").height();
+  const newWidth = $(window).width();
+  const newHeight = $(window).height();
+
+  $("#canvas").attr("width", newWidth);
+  $("#canvas").attr("height", newHeight);
+
+  balls.forEach(ball => {
+    transformBall(
+      ball,
+      ball.x * newWidth / width,
+      ball.y * newHeight / height
+    );
+  });
 });
 
+// Application main loop
 setInterval(() => {
+  // Clear canvas
   ctx.clearRect(0, 0, $("#canvas").width(), $("#canvas").height());
-  balls.forEach(ball => {
+
+  // Update ball state
+  balls.forEach((ball, i) => {
+    // Ball collision
+    for (let j = 0; j < i; j++) {
+      collideBall(balls[i], balls[j]);
+    }
+
+    // Update other ball state and re-render ball
     updateBall(ball);
     renderBall(ball);
-  })
+  });
 }, 1000 / fps);
+
+console.log("~~~~~~ Welcome to simonchen.io! ~~~~~~\nI'm Simon Chen and this is my personal portfolio website!");
