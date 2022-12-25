@@ -7,22 +7,28 @@ let balls = [
     x: 500,
     y: 500,
     size: 1,
-    currentSize: 0.5,
+    currentSize: 0,
     currentSvg: 0,
+    currentTick: 12,
     color: "#FFFFFF",
   },
   {
     x: 200,
     y: 200,
     size: 2,
-    currentSize: 2,
+    currentSize: 0,
     currentSvg: 0,
-    color: "#FFFFFF",
+    currentTick: 0,
+    color: "#EEEEFF",
   }
 ]
 
 const updateBall = (ball) => {
-  ball.currentSize += (ball.size - ball.currentSize) / 10;
+  ball.currentSize += (ball.size - ball.currentSize) / 25;
+  ball.currentTick++;
+  if (ball.currentTick % 30 === 0) {
+    ball.currentSvg = (ball.currentSvg + 1) % ballSvgs.length
+  }
 }
 
 const renderBall = (ball) => {
