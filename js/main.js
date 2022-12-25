@@ -4,8 +4,8 @@ let ctx = $("#canvas")[0].getContext('2d');
 let currentPath = "/";
 let balls = [
   {
-    x: 10,
-    y: 10,
+    x: 500,
+    y: 500,
     size: 1,
     currentSvg: 0,
     color: "#FFFFFF",
@@ -21,14 +21,21 @@ let balls = [
 
 const renderBall = (ball) => {
   const matrix = new DOMMatrix()
-    .scale(ball.size)
+    .scale(
+      scaleX=ball.size,
+      scaleY=ball.size,
+      originX=1000,
+      orignY=65)
     .translate(
       tx=ball.x,
       ty=ball.y
     )
 
   const path = new Path2D();
-  path.addPath(ballSvgs[ball.currentSvg], matrix);
+  path.addPath(
+    ballSvgs[ball.currentSvg],
+    matrix
+  );
 
   ctx.fillStyle = ball.color;
   ctx.fill(path)
@@ -50,4 +57,5 @@ setInterval(() => {
     renderBall(ball);
   })
   
+  balls[1].size += 0.002;
 }, 1000 / fps);
